@@ -43,6 +43,7 @@ articleView.handleCategoryFilter = function() {
       $('article').fadeIn();
       $('article.template').hide();
     }
+    ////////////////////////////////////////////////////////////////////////
     $('#author-filter').val('');
   });
 };
@@ -75,32 +76,50 @@ articleView.setTeasers = function() {
 
 articleView.initNewArticlePage = function() {
  // TODO: Make the tabs work. Right now, you're seeing all the tab content (items with a class of tab-content) on the page at once. The section with the id of "write" should show when the "write" tab is clicked; it is also the default and should be shown on page load. The section with the id of "articles" should show when the "preview" tab is clicked.
+ /////////////////////////////////////////////////////////////
+  articleView.handleMainNav();
+  articleView.setTeasers();
 
   // TODO: Hide the article-export section on page load
+  ////////////////////////////////////////////////////////
+  $('#article-json').hide();
 
   $('#article-json').on('focus', function(){
     this.select();
   });
 
   // TODO: Add an event handler to update the preview and the article-export field if any inputs change.
+  $('#new-article-form').on('submit', articleView.create);
 
 };
 
 // this is the function that generates the preview and shows the export field
-articleView.create = function() {
+articleView.create = function(e) {
   // TODO: Set up a var to hold the new article we are creating.
   // Clear out the #articles element, so we can put in the updated preview
-
+  ///////////////////////////////////////////////////////////////////////
+    e.preventDefault();
+    var articleData = {};
+    $('#new-article-preview').remove();
 
   // TODO: Instantiate an article based on what's in the form fields:
+    var $form = $(this);
+    articleData.title = $form.find('#title').val();
+    articleData.body = $form.find('#body').val();
+    articleData.author = $form.find('#author').val();
+    articleData.authorUrl = $form.find('#category').val();
+    ///////////////////////////////////////////new Date();
+    if ($form.find('#published').is(':checked')) articleData.publishedOn = new Date();
 
 
   // TODO: Use our interface to the Handblebars template to put the article preview into the DOM:
-
+  var template = Handblebars.compile($('#article-template').html());
 
   // TODO: The new articles we create will be shown as JSON in an element in our article-export section. From there, we can copy/paste the JSON into our source data file.
     // Set up this "export" functionality. When data is inputted into the form, that data should be converted to stringified JSON. Then, display that JSON in the element inside the article-export section. The article-export section was hidden on page load; make sure to show it as soon as data is entered in the form.
-
+    ///////////////////////////////////////////////////
+  $('#articles').prepend($(template(articleData)).attr('id', 'new-article-preview'));
+  $('.tab[data-content="articles"]').click()
 };
 
 
