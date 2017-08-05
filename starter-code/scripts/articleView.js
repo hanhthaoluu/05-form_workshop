@@ -83,7 +83,8 @@ articleView.initNewArticlePage = function() {
 
   // TODO: Hide the article-export section on page load
   ////////////////////////////////////////////////////////
-  $('#article-json').hide();
+  $('#article-export').hide();
+  ////hide so don't have a blank input form until we submit the form; show only after the artic
 
   $('#article-json').on('focus', function(){
     this.select();
@@ -151,6 +152,8 @@ articleView.create = function(e) {
 
   $('.tab[data-content="articles"]').click()  //////????????????? purpose
   ////find something with the class of tab that has data-content equal to articles
+  $('#article-export input[type="text"]').val(JSON.stringify(articleData));
+  $('#article-export').show();
 };
 
 
